@@ -1,0 +1,10 @@
+services:
+  web:
+    image: php:8.5-apache
+    container_name: dashboardHome
+    user: "${UID}:${GID}"
+    ports:
+      - "80:80"
+    volumes:
+      - ./main:/var/www/html
+    restart: unless-stopped
