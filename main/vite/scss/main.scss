@@ -1,0 +1,54 @@
+$bg-color: white;
+$text-color: black;
+$accent-color: red;
+$font-one: monaco;
+$font-two: monospace;
+$font-safe: Arial;
+
+body {
+    background-color: $bg-color;
+    color: $text-color;
+    font-family: $font-one, $font-two, $font-safe;
+}
+
+.autoHtml-ports-container {
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(3, auto); // exactly 3 per row
+        gap: 1rem;
+        justify-content: center;
+    }
+    // Page title
+    .title {
+        display: block;
+        text-align: center;
+        align-content: center;
+    }
+    // card
+    .ports-card {
+        display: inline-block;
+        align-content: center;
+        text-decoration-color: $text-color;
+        border: 3px solid $text-color;
+    }
+    // c-head
+    .ports-header {
+        margin: 2px;
+        // c-ports-header
+        .port {
+            display: block;
+            text-align: center;
+            align-content: center;
+        }
+    }
+    // c-button
+    .ports-button {
+        width: fit-content;
+        color: $text-color;
+        text-decoration-color: $text-color;
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px
+    }
+
+}

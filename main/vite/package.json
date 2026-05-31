@@ -1,0 +1,11 @@
+{
+  "name": "dashboard",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^8.0.14",
+    "sass": "^1.100.0"
+  }
+}
