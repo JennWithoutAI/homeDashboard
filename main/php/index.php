@@ -10,7 +10,8 @@
 <body>
 
 <?php // quick and dirty loading for now / this project since stay simple
-require "standaloneLogics/scanPorts.php" ?>
+require_once "standaloneLogics/nav.php";
+require_once "standaloneLogics/scanPorts.php"; ?>
 
 <?php scanPorts();?>
 
