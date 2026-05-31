@@ -15,5 +15,7 @@ require_once "standaloneLogics/scanPorts.php"; ?>
 
 <?php scanPorts();?>
 
+
+
 </body>
 </html>

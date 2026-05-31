@@ -12,10 +12,33 @@
  * while working on this, it feels a bit much to just "fsockOpen", maybe i can do it with less resources?
  * anyway, im going to finish this and possibly use something else like nmap for this but for the purpose of making something ill make it for the people
 */
+if(isset($_POST["portReNaming"])){
+    $jsonFile = "./names.json";
+    if(!file_exists($jsonFile)){file_put_contents($jsonFile, json_encode(new stdClass(), JSON_PRETTY_PRINT));}
+    $oldData = json_decode(file_get_contents($jsonFile),true);
+    if(!isset($_POST["port"]) && !isset($_POST["serviceName"])){ die("something went wrong"); }
+    $port = $_POST["port"];
+    $name = $_POST["serviceName"];
+    $oldData[$port] = $name;
+    file_put_contents($jsonFile, json_encode($oldData,JSON_PRETTY_PRINT));
+}
+if(isset($_POST["portNaming"])){
+    $jsonFile = "./names.json";
+    if(!file_exists($jsonFile)){file_put_contents($jsonFile, json_encode(new stdClass(), JSON_PRETTY_PRINT));}
+    $oldData = json_decode(file_get_contents($jsonFile),true);
+    $newData = $_POST["portNaming"];
+    foreach($_POST as $portname => $portData){
+        if($portname === "portNaming"){ continue;}
+        if(!is_numeric($portname)){continue;}
+        if(isset($oldData[$portname])){ continue;}
+        $oldData[$portname] = $portData;
+    }
+    file_put_contents($jsonFile, json_encode($oldData,JSON_PRETTY_PRINT));
+}
 function scanPorts(){
     $host = "172.17.0.1"; // Base docker IP
     // i like to make a big range for myself
-    $portStart = 81;
+    $portStart = 80;
     $portEnd = 8001;
     $openPorts = [];
     for($portStart;$portStart <= $portEnd;$portStart++){
@@ -41,27 +64,93 @@ function scanPorts(){
             <h1 class='title'> Ports & Services </h1>
             <div class='card-container'>
     ";
+    // Name Json
+    $jsonFile = "./names.json";
+    if(!file_exists($jsonFile)){file_put_contents($jsonFile, json_encode(new stdClass(), JSON_PRETTY_PRINT));}
+    $names = json_decode(file_get_contents($jsonFile),true);
+    $unusedList = [];
+    // ports
     foreach($openPorts as $port) {
-        if(isset($fileData[$port])){
-            // ill make this later
+        // just some security
+        if(!is_numeric($port)){ die( "Something went wrong ");}
+
+        if(isset($names[$port])){               $serviceName = $names[$port];
+            if ($serviceName === "Unused"){ $unusedList[] = $port; continue; }
+        } else {
+            $serviceName = "
+            <form method='post'>
+            <input type='text' name='portNaming' value='true' hidden> 
+            Name : <input type='text' name='{$port}'/>  
+            <input type='submit'> 
+            <input type='submit' value='Unused' name='{$port}'>
+            </form> ";
         }
+
         $html .= "
-                
                 <div class='ports-card'>
                     <div class='ports-header'>
-                        <span class='port'>{$port}</span>
+                        <span class='port'><b>{$port}</b> <br> {$serviceName}</span>
                     </div>
                     <div class='ports-button'>
-                        <a href='http://localhost:$port' target='_blank'> Open Service Port </a>
+                        <a href='http://localhost:{$port}' target='_blank'> Open Service Port </a>
                     </div>
                 </div>
                 ";
-
     }
-    $html .= "</div></div>";
+    $html .= "<div></div></div>";
+    if(!empty($unusedList)){
+    $html .= "
+            <hr>
+            <div class='autoHtml-ports-container'> 
+            <h1 class='title'>Marked as unused ports </h1>
+            <div class='card-container'>
+    ";
+    foreach ($unusedList as $port){
+        $html .= "
+                <div class='ports-card'>
+                    <div class='ports-header'>
+                        <span class='port'><b>{$port}</b></span>
+                    </div>
+                </div>
+                ";
+    }
+        $html .= "<div></div></div>";
+    }
+    $html .= "
+            <hr>
+            <div class='autoHtml-ports-container'> 
+            <h1 class='title'>Change Port Names </h1>
+            <div class='card-container'>
+                <div class='ports-card'>
+                    <form method='post'><input type='text' name='portReNaming' hidden>
+                    <label for='port'>&nbspPort Number : </label>
+                    <input type='number' name='port' required/>
+                    <br>
+                    <label for='serviceName'>Service Name :</label>
+                    <input type='text' name='serviceName' required> 
+                    <br>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='submit' value='Rename'/></form>
+                </div>
+            </div>
+    ";
     echo $html;
 
 }
+function page_title($url) {
+
+    $page = file_get_contents($url);
+
+    if (!$page) return null;
+
+    $matches = array();
+
+    if (preg_match('/<title>(.*?)<\/title>/', $page, $matches)) {
+        return $matches[1];
+    } else {
+        return null;
+    }
+}
+
 
 
 

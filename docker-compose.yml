@@ -14,6 +14,7 @@ services:
     image: node:26-alpine
     working_dir: /app
     user: "${UID}:${GID}"
+    restart: unless-stopped
     volumes:
       - ./main/vite:/app
     ports:
