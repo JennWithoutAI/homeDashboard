@@ -75,7 +75,7 @@ function scanPorts(){
         if(!is_numeric($port)){ die( "Something went wrong ");}
 
         if(isset($names[$port])){               $serviceName = $names[$port];
-            if ($serviceName === "Unused"){ $unusedList[] = $port; continue; }
+            if ($serviceName === "Unused" || $serviceName === "unused"){ $unusedList[] = $port; continue; }
         } else {
             $serviceName = "
             <form method='post'>
