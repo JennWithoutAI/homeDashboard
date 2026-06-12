@@ -11,6 +11,6 @@
     });
 
     foreach ($config['modules'] as $module) {
-        require_once __DIR__ . '/system/onloaders/' . $module['file'];
+        require_once "./modules/". $module["dirName"] ."/moduleLoader/moduleLoad.php";
     }
 ?>

@@ -2,13 +2,11 @@
     "modules": [
         {
             "rank": 1,
-            "name": "Dashboard",
-            "file": "dashboard.php"
+            "dirName": "dashboardLogic"
         },
         {
             "rank": 2,
-            "name": "TwitchApi",
-            "file": "twitch.php"
+            "dirName": "twitchApi"
         }
     ]
 }
