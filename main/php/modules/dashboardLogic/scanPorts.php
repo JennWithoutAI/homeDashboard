@@ -89,11 +89,15 @@ function scanPorts(){
         $html .= "
                 <div class='ports-card'>
                     <div class='ports-header'>
-                        <span class='port'><b>{$port}</b> <br> {$serviceName}</span>
+                        <span class='port'><b><span class='dots'>:</span>{$port}</span></b>
+                        <span class='portname'>{$serviceName}</span>
                     </div>
+                <hr>
+                    
                     <div class='ports-button'>
-                        <a href='http://localhost:{$port}' target='_blank'> Open Service Port </a>
+                        <a href='http://localhost:{$port}' target='_blank' class='servicePort'> Open Service Port </a>
                     </div>
+                    
                 </div>
                 ";
     }
@@ -109,7 +113,7 @@ function scanPorts(){
         $html .= "
                 <div class='ports-card'>
                     <div class='ports-header'>
-                        <span class='port'><b>{$port}</b></span>
+                        <span class='port'><b><span class='dots'>:</span>{$port}</b></span>
                     </div>
                 </div>
                 ";
