@@ -1,3 +1,9 @@
+<?php
+    // api listeners
+    require_once("./start.php");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +16,8 @@
 <body>
 
 <?php // quick and dirty loading for now / this project since stay simple
-require_once "standaloneLogics/nav.php";
-require_once "standaloneLogics/scanPorts.php"; ?>
+require_once "./modules/dashboardLogic/nav.php";
+require_once "./modules/dashboardLogic/scanPorts.php"; ?>
 
 <?php scanPorts();?>
 

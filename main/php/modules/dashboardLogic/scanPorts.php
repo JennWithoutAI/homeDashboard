@@ -12,8 +12,8 @@
  * while working on this, it feels a bit much to just "fsockOpen", maybe i can do it with less resources?
  * anyway, im going to finish this and possibly use something else like nmap for this but for the purpose of making something ill make it for the people
 */
+$jsonFile = "./jsonSheets/dashboard/names.json";
 if(isset($_POST["portReNaming"])){
-    $jsonFile = "./names.json";
     if(!file_exists($jsonFile)){file_put_contents($jsonFile, json_encode(new stdClass(), JSON_PRETTY_PRINT));}
     $oldData = json_decode(file_get_contents($jsonFile),true);
     if(!isset($_POST["port"]) && !isset($_POST["serviceName"])){ die("something went wrong"); }
@@ -22,8 +22,8 @@ if(isset($_POST["portReNaming"])){
     $oldData[$port] = $name;
     file_put_contents($jsonFile, json_encode($oldData,JSON_PRETTY_PRINT));
 }
+// lazy copy paste i know but im tired, let me be
 if(isset($_POST["portNaming"])){
-    $jsonFile = "./names.json";
     if(!file_exists($jsonFile)){file_put_contents($jsonFile, json_encode(new stdClass(), JSON_PRETTY_PRINT));}
     $oldData = json_decode(file_get_contents($jsonFile),true);
     $newData = $_POST["portNaming"];
@@ -36,6 +36,7 @@ if(isset($_POST["portNaming"])){
     file_put_contents($jsonFile, json_encode($oldData,JSON_PRETTY_PRINT));
 }
 function scanPorts(){
+    $jsonFile = "./jsonSheets/dashboard/names.json";
     $host = "172.17.0.1"; // Base docker IP
     // i like to make a big range for myself
     $portStart = 80;
@@ -65,7 +66,6 @@ function scanPorts(){
             <div class='card-container'>
     ";
     // Name Json
-    $jsonFile = "./names.json";
     if(!file_exists($jsonFile)){file_put_contents($jsonFile, json_encode(new stdClass(), JSON_PRETTY_PRINT));}
     $names = json_decode(file_get_contents($jsonFile),true);
     $unusedList = [];

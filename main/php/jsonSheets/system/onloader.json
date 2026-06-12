@@ -1,0 +1,14 @@
+{
+    "modules": [
+        {
+            "rank": 1,
+            "name": "Dashboard",
+            "file": "dashboard.php"
+        },
+        {
+            "rank": 2,
+            "name": "TwitchApi",
+            "file": "twitch.php"
+        }
+    ]
+}
