@@ -1,3 +1,7 @@
 /main/vite/node_modules/
 /main/php/jsonSheets/dashboard/names.json
 /main/vite/package-lock.json
+
+.env
+*.env
+!example.env
