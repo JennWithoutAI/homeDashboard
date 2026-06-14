@@ -1,7 +1,8 @@
 <?php
+
     // partially found this code online, and made myself.
-    class Twitch {
-        private string $baseUrl    = "https://id.twitch.tv/";
+    class twitch {
+        private string $baseUrl = "https://id.twitch.tv/";
         private string $clientId;
         private string $clientSecret;
         private string $redirectUri;
@@ -26,6 +27,9 @@
             exit;
         }
 
+        public function expiredOrNAN(){
+            $this->refreshToken();
+        }
         public function handleCallback(): void {
             if (!isset($_GET['code'])) {
                 die('No code returned from Twitch.');
@@ -34,13 +38,40 @@
             $tokens = $this->exchangeCodeForToken($_GET['code']);
 
             if (isset($tokens['access_token'])) {
-                // Store tokens securely (session, DB, etc.)
                 $_SESSION['access_token']  = $tokens['access_token'];
                 $_SESSION['refresh_token'] = $tokens['refresh_token'];
+                $originalExpire = $tokens["expires_in"];
+                $tokens["expires_in"] = $originalExpire + time();
+                $this->saveToJson($tokens);
                 echo "Authenticated successfully.";
             } else {
                 die('Token exchange failed: ' . json_encode($tokens));
             }
+        }
+        private function refreshToken(){
+            $file = "./jsonSheets/twitch/loginData.json";
+            if(!file_exists($file)){
+                $this->redirectToTwitch();
+            }
+            $twitchData = file_get_contents($file);
+            if(!$twitchData["access_token"] || $twitchData["expires_in"] > time()){
+                $this->redirectToTwitch();
+            }
+            if($twitchData["expires_in"] < time() - 3000){
+                $refreshedToken = $this->exchangeRefreshForToken($twitchData["refresh_token"]);
+                $this->saveToJson($refreshedToken);
+                echo "Authenticated successfully REFFRESHHH.";
+
+            }
+        }
+        private function saveToJson($tokenData){
+            $file = "./jsonSheets/twitch/loginData.json";
+            if(!file_exists($file)){
+                $initFile = fopen($file,"w+");
+                fclose($initFile);
+            }
+            // put
+            file_put_contents($file,json_encode($tokenData));
         }
 
         private function exchangeCodeForToken(string $code): array {
@@ -52,7 +83,14 @@
                 'redirect_uri'  => $this->redirectUri,
             ]);
         }
-
+        private function exchangeRefreshForToken(string $refreshToken): array {
+            return $this->curl("{$this->baseUrl}oauth2/token", [
+                'client_id'     => $this->clientId,
+                'client_secret' => $this->clientSecret,
+                'refresh_token' => $refreshToken,
+                'grant_type'    => 'authorization_code',
+            ]);
+        }
         private function curl(string $url, array $postFields = []): array {
             $ch = curl_init();
             curl_setopt_array($ch, [
@@ -64,7 +102,7 @@
             ]);
 
             $response = curl_exec($ch);
-            curl_close($ch);
+            unset($ch);
 
             return json_decode($response, true) ?? [];
         }

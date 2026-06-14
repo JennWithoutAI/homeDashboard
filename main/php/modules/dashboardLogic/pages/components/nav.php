@@ -1,6 +1,8 @@
 <nav>
     <div class="button-container">
+
+        <a href="?home">HOME</a>
+        <a href="?page=cheatSheet">CheatSheet Coding</a>
         <a href="https://github.com/JennWithoutAI/homeDashboard" target="_blank">Github Link To Project</a>
-        <a href="./twitchApi/v1/twitch.php" target="_blank">Twitch</a>
     </div>
 </nav>
