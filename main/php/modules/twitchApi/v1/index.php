@@ -1,6 +1,7 @@
 <?php
 
     // partially found this code online, and made myself.
+    #[AllowDynamicProperties]
     class twitch {
         private string $baseUrl = "https://id.twitch.tv/";
         private string $clientId;
@@ -12,8 +13,8 @@
             $this->clientId     = $env['TWITCH_CLIENT_ID'];
             $this->clientSecret = $env['TWITCH_CLIENT_SECRET'];
             $this->redirectUri  = $env['TWITCH_REDIRECT_URI'];
+            $this->accessToken = false;
         }
-
         public function redirectToTwitch(): void {
             $params = http_build_query([
                 'response_type' => 'code',
@@ -28,8 +29,10 @@
         }
 
         public function expiredOrNAN(){
+            $this->loadData();
             $this->refreshToken();
         }
+
         public function handleCallback(): void {
             if (!isset($_GET['code'])) {
                 die('No code returned from Twitch.');
@@ -42,28 +45,55 @@
                 $_SESSION['refresh_token'] = $tokens['refresh_token'];
                 $originalExpire = $tokens["expires_in"];
                 $tokens["expires_in"] = $originalExpire + time();
+                $this->accessToken = $tokens["access_token"];
                 $this->saveToJson($tokens);
                 echo "Authenticated successfully.";
             } else {
                 die('Token exchange failed: ' . json_encode($tokens));
             }
         }
+        public function getChannelData($channel){
+
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL            => "https://api.twitch.tv/helix/streams?user_login=" . urlencode($channel),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER     => [
+                    'Client-Id: ' . $this->clientId,
+                    'Authorization: Bearer ' . $this->accessToken,
+                ],
+            ]);
+
+            $response = json_decode(curl_exec($ch), true);
+            unset($ch);
+            var_dump($response);
+            return $response['data'][0]['viewer_count'] ?? 0; // 0 if offline
+        }
         private function refreshToken(){
             $file = "./jsonSheets/twitch/loginData.json";
             if(!file_exists($file)){
                 $this->redirectToTwitch();
             }
-            $twitchData = file_get_contents($file);
-            if(!$twitchData["access_token"] || $twitchData["expires_in"] > time()){
+            $twitchData = json_decode(file_get_contents($file), true);
+            if(empty($twitchData["access_token"]) || $twitchData["expires_in"] < time()){
+                $refreshedToken = $this->exchangeRefreshForToken($twitchData["refresh_token"]);
+                $originalExpire = $refreshedToken["expires_in"];
+                $refreshedToken["expires_in"] = $originalExpire + time();
+                $this->saveToJson($refreshedToken);
+                $this->accessToken = $refreshedToken["access_token"];
+            }
+         }
+
+        private function loadData(){
+            $file = "./jsonSheets/twitch/loginData.json";
+            if(!file_exists($file)){
                 $this->redirectToTwitch();
             }
-            if($twitchData["expires_in"] < time() - 3000){
-                $refreshedToken = $this->exchangeRefreshForToken($twitchData["refresh_token"]);
-                $this->saveToJson($refreshedToken);
-                echo "Authenticated successfully REFFRESHHH.";
-
-            }
+            $twitchData = json_decode(file_get_contents($file), true);
+            $this->accessToken = $twitchData["access_token"];
         }
+
+
         private function saveToJson($tokenData){
             $file = "./jsonSheets/twitch/loginData.json";
             if(!file_exists($file)){

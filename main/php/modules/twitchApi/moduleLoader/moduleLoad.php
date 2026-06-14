@@ -6,11 +6,14 @@
         $twitchClass = new twitch();
         // twitchlock is made automatically [will be] and acts as a does it exist
         // TODO:: Make TwitchLock
-
-
+        $twitchClass->expiredOrNAN();
         if(isset($_GET["code"])){
             // init twitchClass
             $twitchClass->handleCallback();
+        }
+        if($_GET["twitchAPI"]){
+            $data = $twitchClass->getChannelData("gismogy");
+            echo "viewer amount : ".$data;
         }
     //}
 ?>
