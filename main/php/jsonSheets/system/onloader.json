@@ -1,12 +1,16 @@
 {
-    "modules": [
-        {
-            "rank": 1,
-            "dirName": "dashboardLogic"
+    "modules": {
+        "automation": {
+            "rank": 0,
+            "enabled": true
         },
-        {
+        "dashboardLogic": {
+            "rank": 1,
+            "enabled": true
+        },
+        "twitchApi": {
             "rank": 2,
-            "dirName": "twitchApi"
+            "enabled": true
         }
-    ]
+    }
 }

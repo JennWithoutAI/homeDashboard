@@ -1,0 +1,23 @@
+<?php
+    function loadAutomationModule(){
+       // ob_start();
+        $moduleAutomationDirLocation = MODULE_FILEURL_automation."/moduleAutomation";
+        $moduleAutomationDirs = scandir($moduleAutomationDirLocation);
+
+        array_unshift($moduleAutomationDirs, "system");
+        foreach($moduleAutomationDirs as $childModuleDir) {
+
+            if($childModuleDir === "." || $childModuleDir === ".."){ continue; }
+
+            $moduleChildFullDir = $moduleAutomationDirLocation."/".$childModuleDir;
+            if(!is_dir($moduleChildFullDir)){ continue; }
+
+            $automateDir = $moduleChildFullDir."/automate.php";
+            if(!file_exists($automateDir)){ continue; }
+            require_once($automateDir);
+        }
+      //  ob_end_clean();
+    }
+    loadAutomationModule();
+
+?>
