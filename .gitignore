@@ -2,6 +2,7 @@
 /main/php/jsonSheets/dashboard/names.json
 /main/vite/package-lock.json
 
+.idea
 .env
 *.env
 !example.env
