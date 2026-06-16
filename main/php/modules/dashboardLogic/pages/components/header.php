@@ -8,3 +8,6 @@
     <link rel="stylesheet" href="http://localhost:5173/scss/main.scss">
 </head>
 <body>
+<?php
+    require_once MODULE_FILEURL_dashboardLogic."/pages/components/nav.php";
+?>

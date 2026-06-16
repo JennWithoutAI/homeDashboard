@@ -136,6 +136,11 @@ function scanPorts(){
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='submit' value='Rename'/></form>
                 </div>
             </div>
+            <div>
+            <br><br><br><br><br><br><br><br>
+            <h5> if all pages end up in 404, try this emergency button </h5>
+            <a class='unlock' href='?unlock'>Exterminatus Terra</a>
+            </div>
     ";
     echo $html;
 
@@ -155,7 +160,5 @@ function page_title($url) {
     }
 }
 
-
-
-
 ?>
+

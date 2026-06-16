@@ -44,12 +44,12 @@
             $navbarJsonFileDir = JSON_FILEURL."/dashboard/nav.json";
             if(!file_exists($navbarJsonFileDir)){
                 // the extra key is for multiple navBars If ever required
-                $defaultData["navItems"][0]["name"] = "home";
-                $defaultData["navItems"][0]["href"] = "/?page=home";
-                $defaultData["navItems"][0]["rank"] = 0;
-                $defaultData["navItems"][0]["enabled"] = true;
-                $defaultData["navItems"][0]["type"] = "public";
-                $defaultData["navItems"][0]["fullDir"] = MODULE_FILEURL_dashboardLogic."/pages/public/home.php";
+                $defaultData["navItems"]["home"]["name"] = "home";
+                $defaultData["navItems"]["home"]["href"] = "/?page=home";
+                $defaultData["navItems"]["home"]["rank"] = 0;
+                $defaultData["navItems"]["home"]["enabled"] = true;
+                $defaultData["navItems"]["home"]["type"] = "public";
+                $defaultData["navItems"]["home"]["fullDir"] = MODULE_FILEURL_dashboardLogic."/pages/public/home.php";
                 file_put_contents($navbarJsonFileDir,json_encode($defaultData,true));
             }
             $pageDirs = MODULE_FILEURL_dashboardLogic."/pages";
@@ -57,7 +57,6 @@
 
             $currentNavs = json_decode(file_get_contents($navbarJsonFileDir),true);
             $starterIndex = 0;
-            $initKey = count($currentNavs["navItems"]);
             $update = false;
             foreach($scannableDirs as $scanDir){
                 $publicDirs = scandir($pageDirs."/".$scanDir);
@@ -75,13 +74,12 @@
                     $withoutExt = preg_replace('/\.\w+$/', '', $file);
 
                     $update = true;
-                    $currentNavs["navItems"][$initKey]["name"]    = $withoutExt;
-                    $currentNavs["navItems"][$initKey]["href"]    = "/?page=".$withoutExt;
-                    $currentNavs["navItems"][$initKey]["rank"]    = ++$starterIndex;
-                    $currentNavs["navItems"][$initKey]["enabled"] = true;
-                    $currentNavs["navItems"][$initKey]["type"]    = $scanDir;
-                    $currentNavs["navItems"][$initKey]["fullDir"] = $fullUrlFile;
-                    $initKey++;
+                    $currentNavs["navItems"][$withoutExt]["name"]    = $withoutExt;
+                    $currentNavs["navItems"][$withoutExt]["href"]    = "/?page=".$withoutExt;
+                    $currentNavs["navItems"][$withoutExt]["rank"]    = ++$starterIndex;
+                    $currentNavs["navItems"][$withoutExt]["enabled"] = true; // keep it true until prod
+                    $currentNavs["navItems"][$withoutExt]["type"]    = $scanDir;
+                    $currentNavs["navItems"][$withoutExt]["fullDir"] = $fullUrlFile;
                 }
             }
             if($update){

@@ -1,8 +1,4 @@
-<?php
 
-require_once MODULE_FILEURL_dashboardLogic."/pages/components/nav.php";
-
-?>
 
     <hr>
 <?php

@@ -1,6 +1,4 @@
 <?php
-require_once MODULE_FILEURL_dashboardLogic."/pages/components/nav.php";
-
 if(!defined('MODULE_FILEURL_twitchApi')){
     echo "Twitch API MODULE IS NOT ENABLED";
     return;
