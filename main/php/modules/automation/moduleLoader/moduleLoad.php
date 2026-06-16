@@ -1,6 +1,8 @@
 <?php
     function loadAutomationModule(){
        // ob_start();
+        $lockDir = MODULE_FILEURL_automation."/auto.lock";
+        if(file_exists($lockDir) && !isset($_GET["unlock"])){ return; }
         $moduleAutomationDirLocation = MODULE_FILEURL_automation."/moduleAutomation";
         $moduleAutomationDirs = scandir($moduleAutomationDirLocation);
 
@@ -17,6 +19,7 @@
             require_once($automateDir);
         }
       //  ob_end_clean();
+        file_put_contents($lockDir,time());
     }
     loadAutomationModule();
 

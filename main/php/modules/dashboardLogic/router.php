@@ -6,7 +6,10 @@
         $page = $_GET["page"];
         $page = basename($_GET["page"]); // strips directory separators
         if(!preg_match('/^[a-zA-Z0-9_]+$/', $page)) {
-            die("Fix this in the sanitation section of logic");
+            // gotta fix htis tomroww
+            $errorImg = MODULE_WEBURL_dashboardLogic."/pages/components/img/404.png";
+            echo "<img src='$errorImg'>";
+            die("A big error happend");
         }
         $gotoPage = $pageFileUrl."/public/".$page.".php";
         if(!file_exists($gotoPage)){

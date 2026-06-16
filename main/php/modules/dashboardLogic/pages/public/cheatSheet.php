@@ -11,7 +11,9 @@ $allConstants = $constants['user'] ?? [];
 
 $moduleConstants = array_filter(
         $allConstants,
-        fn($key) => str_starts_with($key, 'MODULE_'),
+        fn($key) =>
+                str_starts_with($key, 'MODULE_') ||
+                str_starts_with($key, 'JSON_'),
         ARRAY_FILTER_USE_KEY
 );
 
