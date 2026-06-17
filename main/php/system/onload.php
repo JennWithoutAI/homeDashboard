@@ -2,6 +2,11 @@
 $jsonDataFile = JSON_FILEURL."/system/onloader.json";
 
 // MAKE SURE SYSTEM IS BEING ADDED
+if(!is_dir(JSON_FILEURL) || !is_Dir(JSON_FILEURL."/system")){
+    mkdir(JSON_FILEURL);
+    mkdir(JSON_FILEURL."/system");
+    if(is_file(MODULE_FILEURL."/automation/auto.lock")){ unlink(MODULE_FILEURL."/automation/auto.lock");}
+}
 if (!file_exists($jsonDataFile)) {
     $starter["modules"]["automation"] = [
         "rank" => 0,

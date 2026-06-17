@@ -35,7 +35,7 @@ if(isset($_POST["portNaming"])){
     }
     file_put_contents($jsonFile, json_encode($oldData,JSON_PRETTY_PRINT));
 }
-function scanPorts(){
+function scanPorts($systemOnly = false){
     $jsonFile = JSON_FILEURL."/dashboard/names.json";
     $host = "172.17.0.1"; // Base docker IP
     // i like to make a big range for myself
@@ -66,9 +66,11 @@ function scanPorts(){
             <div class='card-container'>
     ";
     // Name Json
+    if(!is_dir(JSON_FILEURL."/dashboard")){ mkdir(JSON_FILEURL."/dashboard");}
     if(!file_exists($jsonFile)){file_put_contents($jsonFile, json_encode(new stdClass(), JSON_PRETTY_PRINT));}
     $names = json_decode(file_get_contents($jsonFile),true);
     $unusedList = [];
+    if($systemOnly){ return;} // system only wants to update
     // ports
     foreach($openPorts as $port) {
         // just some security

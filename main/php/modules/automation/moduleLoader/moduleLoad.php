@@ -4,12 +4,14 @@
         $lockDir = MODULE_FILEURL_automation."/auto.lock";
 
         if(file_exists($lockDir) && isset($_GET["unlock"])){
+            unlink($lockDir);
+        }
+        if(!file_exists($lockDir)){
                 $moduleAutomationDirLocation = MODULE_FILEURL_automation."/moduleAutomation";
                 $moduleAutomationDirs = scandir($moduleAutomationDirLocation);
 
                 array_unshift($moduleAutomationDirs, "system");
                 foreach($moduleAutomationDirs as $childModuleDir) {
-
                     if($childModuleDir === "." || $childModuleDir === ".."){ continue; }
 
                     $moduleChildFullDir = $moduleAutomationDirLocation."/".$childModuleDir;

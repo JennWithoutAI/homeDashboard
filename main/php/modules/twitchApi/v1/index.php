@@ -9,13 +9,16 @@
         private string $accessToken;
 
         public function __construct() {
+            $this->checkJsonDir();
             $env = (new Tools())->loadEnv();
             $this->clientId     = $env['TWITCH_CLIENT_ID'];
             $this->clientSecret = $env['TWITCH_CLIENT_SECRET'];
             $this->redirectUri  = $env['TWITCH_REDIRECT_URI'];
             $this->checkTokenData();
         }
-
+        private function checkJsonDir(){
+            if(!is_dir(JSON_FILEURL."/twitch")){ mkdir(JSON_FILEURL."/twitch");}
+        }
         public function redirectToTwitch(): void {
             $params = http_build_query([
                 'response_type' => 'code',

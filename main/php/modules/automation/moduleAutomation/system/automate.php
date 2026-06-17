@@ -39,7 +39,7 @@
                     // just learned i can do it like this so gotta update it everywheere
                     $fileData["modules"][$module] = [
                         "rank"    => $highestRankForAutomation,
-                        "enabled" => false
+                        "enabled" => true // if prod, SET FALSE!!
                     ];
                 }
                 file_put_contents($file, json_encode($fileData, JSON_PRETTY_PRINT));

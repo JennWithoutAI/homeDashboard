@@ -1,16 +1,13 @@
 <?php
 if(!file_exists(JSON_FILEURL."/dashboard/nav.json")){
-    ?>
-    <nav>
-        <div class="button-container">
-            <a href="?home">HOME</a>
-            <a href="?page=cheatSheet">CheatSheet Coding</a>
-            <a href="?page=twitch">Twitch Board</a>
-            <a href="https://github.com/JennWithoutAI/homeDashboard" target="_blank">Github Link To Project</a>
-        </div>
-    </nav>
-    <?php
-    return;
+    $page = "";
+    if(isset($_GET["page"])){
+        $page = "?page=".$_GET["page"];
+        $full = $page."&unlock=true";
+    } else {
+        $full = "?unlock=true";
+    }
+    header("Location: " .$full);
 }
 // auto load
 $navBarItems = json_decode(file_get_contents(JSON_FILEURL."/dashboard/nav.json"),true);

@@ -6,7 +6,7 @@
         $twitchClass = new twitch();
         // twitchlock is made automatically [will be] and acts as a does it exist
         // TODO:: Make TwitchLock
-echo "<pre>";
+    echo "<pre>";
         $channel = "gismogy";
         if(isset($_GET["twitchAPI"])){
             $twitchGET = $_GET["twitchAPI"];

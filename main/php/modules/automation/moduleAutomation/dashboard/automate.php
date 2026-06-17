@@ -7,6 +7,7 @@
     // config
     $enableAutomation = [];
     $enableAutomation["navbar"] = true;
+    $enableAutomation["scanDirs"] = true;
 
     // activate
     new automateDashboard($enableAutomation);
@@ -38,6 +39,13 @@
             if(!file_exists($pagesMainDir."/public/home.php")){
                 file_put_contents($pagesMainDir."/public/home.php","");
             }
+        }
+        private function scanDirs(){
+            if(!file_exists(JSON_FILEURL."/dashboard/names.json")){
+                require_once(MODULE_FILEURL_dashboardLogic."/scanPorts.php");
+                scanPorts(true);
+            }
+
         }
         private function navbar(){
             if(!file_exists(MODULE_FILEURL_dashboardLogic."/pages/components/nav.php")){ $this->createStarterFrontend(); }

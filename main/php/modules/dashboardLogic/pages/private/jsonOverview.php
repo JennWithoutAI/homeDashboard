@@ -27,16 +27,17 @@
             $fileData = file_get_contents($fileModuleJsonDir);
             $fileDataDecoded = json_decode($fileData, true);
             $prettyJson = json_encode($fileDataDecoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-
-            $html .= "
+                $html .= "
                 <div class='control-card'>
                     <div class='control-header'>
                         <span class='port'><b><span class='dots'>:</span>{$childModuleJson}</b></span>
-                        <form href='#' method='post'>
-                            <textarea class='portname'>{$prettyJson}</textarea>
+                        <span class='{$fileModuleJsonDir}>'><b><span class='dots'></span>{$fileModuleJsonDir}</b></span>
+                        <form action='' method='post'>
+                            <input type='hidden' name='CONTROL_moduleFullFile' value='{$fileModuleJsonDir}'>
+                            <textarea name='CONTROL_jsonField' class='portname'>{$prettyJson}</textarea>
                             <br>
-                            <input class='update' type='submit' value='updateChanges' >
-                            <input class='reset' type='submit' value='fullR eset' >
+                            <input class='update' type='submit' name='CONTROL_saveChanges' value='SaveChanges'>
+                            <input class='reset' type='submit' name='CONTROL_resetForm' value='ResetForm'>
                         </form>
                     </div>
                     <hr>
