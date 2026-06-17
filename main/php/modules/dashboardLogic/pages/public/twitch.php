@@ -19,6 +19,8 @@ $currentpage = $_GET["page"];
 <br><br><br><br><br>
     <!-- use for now nav for the button styling, fix it later TODO:: FIX STYLING AND HTML -->
 <nav>
-    <a href="?page=<?php echo $currentpage?>&twitchAPI=checkViewers">check Viewers</a>
-
+        <a href="?page=<?php echo $currentpage?>&twitchAPI=all">check All!</a>
+        <a href="?page=<?php echo $currentpage?>&twitchAPI=getViewers">check Viewer Count</a>
+        <a href="?page=<?php echo $currentpage?>&twitchAPI=getChat">check Chat (doesnt work yet)</a>
+        <a href="?page=<?php echo $currentpage?>&twitchAPI=getChatters">Check Viewers</a>
 </nav>

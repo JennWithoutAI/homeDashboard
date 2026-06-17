@@ -21,7 +21,7 @@
                 'response_type' => 'code',
                 'client_id'     => $this->clientId,
                 'redirect_uri'  => $this->redirectUri,
-                'scope'         => 'channel:manage:polls channel:read:polls',
+                'scope' => 'channel:manage:polls channel:read:polls moderator:read:chatters user:read:email',
                 'state'         => bin2hex(random_bytes(16)),
             ]);
             ob_clean();
@@ -88,8 +88,41 @@
 
             return $response['data'][0]['viewer_count'] ?? 0;
         }
+        private function getUserId(string $channel): string {
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL            => 'https://api.twitch.tv/helix/users?login=' . urlencode($channel),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER     => [
+                    'Client-Id: ' . $this->clientId,
+                    'Authorization: Bearer ' . $this->accessToken,
+                ],
+            ]);
 
-        private function refreshToken(?array $twitchData): void {
+            $response = json_decode(curl_exec($ch), true);
+            unset($ch);
+
+            return $response['data'][0]['id'] ?? '';
+        }
+        public function getChatters(string $channel) {
+            $broadcasterId = $this->getUserId($channel);
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL            => 'https://api.twitch.tv/helix/chat/chatters?broadcaster_id=' . urlencode($broadcasterId)."&moderator_id=". urlencode($broadcasterId) ,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER     => [
+                    'Client-Id: ' . $this->clientId,
+                    'Authorization: Bearer ' . $this->accessToken,
+                ],
+            ]);
+
+            $response = json_decode(curl_exec($ch), true);
+            unset($ch);
+            $trimData = $response["data"];
+            return $trimData;
+        }
+
+        private function refreshToken($twitchData): void {
             if (!$twitchData) {
                 $this->redirectToTwitch();
             }

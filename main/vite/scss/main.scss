@@ -79,6 +79,9 @@ input[type=submit] {
 
     &:hover { background: $red; color: $bg; }
 }
+.lime {
+    color: $lime;
+}
 nav {
     background: $bg;
     border-bottom: 1.5px solid $lime;
