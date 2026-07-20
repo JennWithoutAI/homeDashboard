@@ -123,6 +123,96 @@ hr {
     margin: 4px 0 20px;
 }
 
+.page-container {
+    padding: 24px 20px 8px;
+
+    .title {
+        justify-content: center;
+        display: flex;
+        font-size: 0.786em;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: $muted;
+        text-align: left;
+        margin-bottom: 16px;
+        padding-left: 2px;
+    }
+
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .ports-card {
+        background: $surface;
+        border: 1px solid $border;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: border-color 0.15s;
+
+        &:hover { border-color: $border-hover; }
+
+        hr { margin: 0; }
+    }
+
+    .ports-header {
+        padding: 12px 14px 10px;
+
+        .port {
+            font-size: 1.429em;
+            font-weight: 700;
+            color: $lime;
+            letter-spacing: -0.02em;
+            display: block;
+            margin-bottom: 4px;
+
+            .dots { color: $dot-color; }
+        }
+
+        .portname {
+            font-size: 0.786em;
+            color: $muted;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        form {
+            margin-top: 6px;
+
+            input[type=text] {
+                margin-bottom: 6px;
+            }
+        }
+    }
+
+    .ports-button {
+        padding: 10px 14px;
+
+        a {
+            font-size: 0.786em;
+            color: $muted;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: color 0.15s;
+
+            &::after { content: " ↗"; font-size: 0.909em; }
+            &:hover { color: $lime; }
+        }
+    }
+
+    .ports-card.unused {
+        background: $surface-2;
+        border-style: dashed;
+
+        .port { font-sizze: 1em; color: #2D3748; }
+    }
+}
+
 .autoHtml-ports-container {
     padding: 24px 20px 8px;
 

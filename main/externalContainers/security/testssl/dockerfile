@@ -1,0 +1,12 @@
+FROM drwetter/testssl.sh AS testssl
+
+FROM python:3.12-slim
+COPY --from=testssl /home/testssl /opt/testssl
+RUN ln -s /opt/testssl/testssl.sh /usr/local/bin/testssl.sh \
+    && pip install --no-cache-dir flask \
+    && apt-get update && apt-get install -y --no-install-recommends bsdmainutils dnsutils procps \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY app.py /app/app.py
+EXPOSE 9001
+CMD ["python3", "app.py"]

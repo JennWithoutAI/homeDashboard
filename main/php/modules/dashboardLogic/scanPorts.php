@@ -40,7 +40,7 @@ function scanPorts($systemOnly = false){
     $host = "172.17.0.1"; // Base docker IP
     // i like to make a big range for myself
     $portStart = 80;
-    $portEnd = 8001;
+    $portEnd = 10000;
     $openPorts = [];
     for($portStart;$portStart <= $portEnd;$portStart++){
         // little trick i enjoy using, (shoutout to my old colleagues, (dutch) De Peertjes ;)

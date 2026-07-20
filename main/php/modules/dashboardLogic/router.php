@@ -24,7 +24,11 @@
                 $selectedPage = $urlPaths["navItems"][$page];
                 if(!isset($selectedPage)){
                     require_once $pageFileUrl."/components/404.php";
-                    die();
+                    die();#   9001  testssl.sh HTTP wrapper
+#   9002  Nuclei HTTP wrapper
+#   9003  Trivy HTTP wrapper
+#   9004  sqlmap REST API
+#   9005  ZAP REST API
                 }
 
                 $gotoPage = $selectedPage["fullDir"];

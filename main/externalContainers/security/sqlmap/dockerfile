@@ -1,0 +1,22 @@
+
+# sqlmap ships its OWN REST API server (sqlmapapi.py) inside the
+# project itself — no third-party wrapper image needed/trustworthy.
+# We just clone the official repo and run it directly.
+ 
+FROM python:3.12-slim
+ 
+RUN apt-get update && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
+ 
+RUN git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git /opt/sqlmap
+ 
+WORKDIR /opt/sqlmap
+ 
+EXPOSE 8775
+ 
+# -s = server mode, -H = bind host, -p = port
+# Newer sqlmap versions require --username/--password for the API server.
+# Provided via env vars (set in docker-compose, not hardcoded here).
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["python3 sqlmapapi.py -s -H 0.0.0.0 -p 8775 --username \"$SQLMAP_API_USER\" --password \"$SQLMAP_API_PASS\""]
+ 

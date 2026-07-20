@@ -21,7 +21,7 @@
                     if(!file_exists($automateDir)){ continue; }
                     require_once($automateDir);
                 }
-              //  ob_end_clean();
+                  //  ob_end_clean();
                 file_put_contents($lockDir,time());
             }
         }
