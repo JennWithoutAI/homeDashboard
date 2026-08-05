@@ -1,5 +1,5 @@
 <?php
-if(!defined('MODULE_FILEURL_twitchApi')){
+if(!defined('MODULE_FILEURL_twitchApi') ){
     echo "Twitch API MODULE IS NOT ENABLED";
     return;
 }
@@ -8,6 +8,8 @@ if(!file_exists(MODULE_FILEURL_twitchApi)){
     die("Twitch API MODULE NOT ENABLED, please Fix that before using this");
 }
 // made in module loader
+
+
 
 
 $currentpage = $_GET["page"];

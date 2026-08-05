@@ -1,5 +1,4 @@
 <?php
-
     #[AllowDynamicProperties]
     class twitch {
         private string $baseUrl = "https://id.twitch.tv/";
@@ -11,6 +10,12 @@
         public function __construct() {
             $this->checkJsonDir();
             $env = (new Tools())->loadEnv();
+            if(!isset($env['TWITCH_CLIENT_ID']) || isset($env['TWITCH_CLIENT_SECRET']) || isset($env['TWITCH_REDIRECT_URI'])){
+
+
+                return false;
+            }
+
             $this->clientId     = $env['TWITCH_CLIENT_ID'];
             $this->clientSecret = $env['TWITCH_CLIENT_SECRET'];
             $this->redirectUri  = $env['TWITCH_REDIRECT_URI'];

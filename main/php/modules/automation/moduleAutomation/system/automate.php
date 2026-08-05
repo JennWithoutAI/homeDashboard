@@ -42,6 +42,11 @@
                         "enabled" => true // if prod, SET FALSE!!
                     ];
                 }
+
+                // dashboard always needs to go last
+                if(isset($fileData["modules"]["dashboardLogic"])){
+                    $fileData["modules"]["dashboardLogic"]["rank"] = $highestRankForAutomation + 1;
+                }
                 file_put_contents($file, json_encode($fileData, JSON_PRETTY_PRINT));
             }
         }

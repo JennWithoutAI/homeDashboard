@@ -1,15 +1,13 @@
 services:
   web:
     image: php:8.5-apache
-    container_name: dashboardHome
+    container_name: PHP_NAME
     user: 1000:1000
     ports:
       - "80:80"
     volumes:
       - ./main/php:/var/www/html
     restart: unless-stopped
-    networks:
-      - security-net
     depends_on:
       - vite
   vite:
@@ -23,80 +21,5 @@ services:
       - "5173:5173"
     command: sh -c "npm install && npm run dev"
 
-  # ============================================================
-  # Port map
-  #   9001  testssl.sh HTTP wrapper
-  #   9002  Nuclei HTTP wrapper
-  #   9003  Trivy HTTP wrapper
-  #   9004  sqlmap REST API
-  #   9005  ZAP REST API
-  # ============================================================
-  zap:
-    image: zaproxy/zap-stable
-    container_name: sec_zap
-    command: >
-      zap.sh -daemon
-      -host 0.0.0.0
-      -port 8090
-      -config api.disablekey=true
-      -config api.addrs.addr.name=.*
-      -config api.addrs.addr.regex=true
-    ports:
-      - "127.0.0.1:8090:8090"   # bind to localhost only — see notes
-    volumes:
-      - zap_data:/zap/wrk:rw
-    networks:
-      - security-net
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 2g
-    nuclei-api:
-    build:
-      context: ./main/externalContainers/security/nuclei
-      dockerfile: Dockerfile
-    container_name: sec_nuclei_api
-    ports:
-      - "127.0.0.1:9002:9002"
-    volumes:
-      - nuclei_templates:/root/nuclei-templates
-    networks:
-      - security-net
-    restart: unless-stopped
-  sqlmap:
-    build:
-      context: ./main/externalContainers/security/sqlmap
-      dockerfile: Dockerfile
-    container_name: sec_sqlmap
-    environment:
-      SQLMAP_API_USER: ${SQLMAP_API_USER:-admin}
-      SQLMAP_API_PASS: ${SQLMAP_API_PASS}
-    ports:
-      - "127.0.0.1:9004:8775"
-    volumes:
-      - sqlmap_data:/root/.local/share/sqlmap
-    networks: 
-      - security-net
-    restart: unless-stopped
-  testssl-api:
-    build:
-      context: ./main/externalContainers/security/testssl
-      dockerfile: Dockerfile
-    container_name: sec_testssl_api
-    ports:
-      - "127.0.0.1:9001:9001"
-    networks:
-      - security-net
-    restart: unless-stopped
-
-
-networks:
-  security-net:
-    driver: bridge
-volumes:
-  zap_data:
-  sqlmap_data:
-  nuclei_templates:
 
 

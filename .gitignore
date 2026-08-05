@@ -1,6 +1,7 @@
 /main/vite/node_modules/
 /main/vite/package-lock.json
 /main/php/jsonSheets
+/main/php/.env
 .idea
 .env
 *.env

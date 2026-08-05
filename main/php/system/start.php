@@ -2,6 +2,8 @@
     session_start();
     // CONSTS
     define("BASEURL", $_SERVER["DOCUMENT_ROOT"]);
+    // env
+
     const MODULE_FILEURL = BASEURL."/modules";
     const MODULE_URL = "/modules";
     const JSON_URL = "/jsonSheets";

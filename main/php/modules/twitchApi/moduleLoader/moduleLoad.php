@@ -1,4 +1,8 @@
 <?php
+
+    // twitch api is out of order due bugs, so making v2 after finishing other stuff
+
+    return;
     /* twitch api */
         $twitchApiUrl = "./modules/twitchApi/v1/";
     //if(file_exists($twitchApiUrl."twitch.lock")){

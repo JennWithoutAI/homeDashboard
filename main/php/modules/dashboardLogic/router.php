@@ -1,7 +1,20 @@
 <?php
+
+    // addon for fretpage
+    if(defined(MODULE_FILEURL_fretnet)){
+        if(isset($_GET["fretpage"])){
+            // use fretRouter in the module
+            return;
+        }
+    }
+
+
+
     $pageFileUrl = MODULE_FILEURL_dashboardLogic."/pages";
     require_once $pageFileUrl."/components/header.php";
     router($pageFileUrl);
+
+    // TODO:: RANKS ARE BROKEN PLEASE FIX YOU IDIOT
 
     function router($pageFileUrl){
             $addDefault = true;

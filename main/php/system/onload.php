@@ -1,6 +1,7 @@
 <?php
 $jsonDataFile = JSON_FILEURL."/system/onloader.json";
 
+// TODO:: FIX pageEnabled in every page json
 // MAKE SURE SYSTEM IS BEING ADDED
 if(!is_dir(JSON_FILEURL) || !is_Dir(JSON_FILEURL."/system")){
     mkdir(JSON_FILEURL);
@@ -22,6 +23,7 @@ if (!isset($config["modules"]["automation"])) {
     ];
     file_put_contents($jsonDataFile,json_encode($config));
 }
+
 
 uasort($config['modules'], function ($a, $b) {
     return $a['rank'] <=> $b['rank'];
